@@ -6,7 +6,7 @@ import claudeLogoUrl from './assets/claude-symbol.svg'
 const BODY_FONT = '16px "Helvetica Neue", Helvetica, Arial, sans-serif'
 const BODY_LINE_HEIGHT = 25
 const CREDIT_LINE_HEIGHT = 16
-const HEADLINE_TEXT = '1 SITUATIONAL AWARENESS: THE DECADE AHEAD'
+const HEADLINE_TEXT = '2 SITUATIONAL AWARENESS: THE DECADE AHEAD'
 const HEADLINE_FONT_FAMILY = '"Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif'
 const OPENAI_LOGO_SRC = openaiLogoUrl
 const CLAUDE_LOGO_SRC = claudeLogoUrl
@@ -699,10 +699,11 @@ function buildLayout(pageWidth: number, pageHeight: number, lineHeight: number):
   const creditGap = Math.round(Math.max(14, lineHeight * 0.6))
   const creditTop = headlineTop + headlineResult.height + creditGap
   const copyTop = creditTop + CREDIT_LINE_HEIGHT + Math.round(Math.max(20, lineHeight * 0.9))
+  const narrowLogoT = Math.max(0, Math.min(1, (960 - pageWidth) / 30))
 
   const openaiTopLimit = copyTop + Math.round(lineHeight * 1.95)
   const maxOpenaiSizeByHeight = Math.floor((pageHeight - gutter - openaiTopLimit) / 1.03)
-  const openaiWidthFactor = Math.min(0.226, 0.198 + Math.max(0, 1100 - pageWidth) * 0.00006)
+  const openaiWidthFactor = 0.198 + 0.04 * narrowLogoT
   const openaiSize = Math.round(Math.max(148, Math.min(366, pageWidth * openaiWidthFactor, maxOpenaiSizeByHeight)))
   const claudeSize = Math.round(Math.max(252, Math.min(428, pageWidth * 0.34, pageHeight * 0.42)))
 
@@ -720,8 +721,10 @@ function buildLayout(pageWidth: number, pageHeight: number, lineHeight: number):
     height: pageHeight - headlineTop - gutter,
   }
 
+  const openaiBaseX = leftRegion.x - Math.round(openaiSize * 0.41)
+  const openaiInwardX = rightRegion.x - Math.round(openaiSize * 0.86)
   const openaiRect: Rect = {
-    x: leftRegion.x - Math.round(openaiSize * 0.41),
+    x: Math.round(openaiBaseX + (openaiInwardX - openaiBaseX) * narrowLogoT),
     y: pageHeight - gutter - openaiSize + Math.round(openaiSize * 0.2),
     width: openaiSize,
     height: openaiSize,
