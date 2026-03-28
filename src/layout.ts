@@ -330,7 +330,9 @@ function measureAnalysis(
 
     if (segWordLike && segText.length > 1) {
       const graphemeWidths = getSegmentGraphemeWidths(segText, segMetrics, cache, emojiCorrection)
-      const graphemePrefixWidths = getSegmentGraphemePrefixWidths(segText, segMetrics, cache, emojiCorrection)
+      const graphemePrefixWidths = engineProfile.preferPrefixWidthsForBreakableRuns
+        ? getSegmentGraphemePrefixWidths(segText, segMetrics, cache, emojiCorrection)
+        : null
       pushMeasuredSegment(
         segText,
         w,
